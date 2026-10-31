@@ -6,6 +6,7 @@ Current packages:
 
 - `@zudev/ui`
 - `@zudev/utils`
+- `@zudev/markdown-editor`
 
 From the workspace root, Turborepo builds these packages before dependent app tasks. This repository also has its own Bun workspace manifest, lockfile, and TypeScript configuration so it can be checked independently:
 
