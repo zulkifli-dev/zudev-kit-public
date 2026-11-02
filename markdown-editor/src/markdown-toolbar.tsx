@@ -1,4 +1,5 @@
 import { markdown } from "@codemirror/lang-markdown";
+import { EditorView } from "@codemirror/view";
 import CodeMirror from "@uiw/react-codemirror";
 import { Button } from "@zudev/ui/components/button";
 import {
@@ -417,7 +418,7 @@ export function MarkdownEditor({
         value={value}
         height={height}
         width="100%"
-        extensions={[markdown()]}
+        extensions={[markdown(), EditorView.lineWrapping]}
         onChange={onChange}
         onCreateEditor={(view) => {
           editorRef.current = view;
