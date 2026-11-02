@@ -14,6 +14,11 @@
       "bun": "./src/index.ts",
       "default": "./dist/index.js"
     },
+    "./components/toast": {
+      "types": "./dist/components/toast.d.ts",
+      "bun": "./src/components/toast.tsx",
+      "default": "./dist/components/toast.js"
+    },
     "./components/*": {
       "types": "./dist/components/*.d.ts",
       "bun": "./src/components/*.tsx",

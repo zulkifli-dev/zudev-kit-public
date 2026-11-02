@@ -46,6 +46,7 @@ export interface MarkdownEditorProps {
   tools: MarkdownToolbarTool[];
   height?: string;
   className?: string;
+  onImageSelected?: (file: File, objectUrl: string) => void;
 }
 
 type CodeMirrorView = Parameters<
@@ -139,6 +140,7 @@ export function MarkdownEditor({
   tools,
   height = "380px",
   className = "",
+  onImageSelected,
 }: MarkdownEditorProps) {
   const editorRef = useRef<CodeMirrorView | null>(null);
   const imageInputRef = useRef<HTMLInputElement | null>(null);
@@ -291,6 +293,7 @@ export function MarkdownEditor({
 
     const url = URL.createObjectURL(file);
     imageObjectUrls.current.push(url);
+    onImageSelected?.(file, url);
     const alt = file.name
       .replace(/\.[^.]+$/, "")
       .replace(/[-_]+/g, " ")
@@ -404,7 +407,7 @@ export function MarkdownEditor({
       <input
         ref={imageInputRef}
         type="file"
-        accept="image/*"
+        accept="image/png,image/jpeg,image/webp"
         className="hidden"
         aria-label="Choose article image"
         onChange={insertImage}
