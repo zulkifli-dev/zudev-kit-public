@@ -1,5 +1,5 @@
 {
-  "name": "@zulkifli-dev/markdown-editor",
+  "name": "@zudev/markdown-editor",
   "version": "1.0.0",
   "repository": {
     "type": "git",
@@ -23,7 +23,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.5.2",
     "@uiw/react-codemirror": "^4.25.12",
-    "@zulkifli-dev/ui": "^1.0.0",
+    "@zudev/ui": "^1.0.0",
     "lucide-react": "^1.65.0",
     "mermaid": "^12.2.0",
     "react-markdown": "^10.1.0",

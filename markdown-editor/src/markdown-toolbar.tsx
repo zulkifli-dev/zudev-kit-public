@@ -1,6 +1,6 @@
 import { markdown } from "@codemirror/lang-markdown";
 import CodeMirror from "@uiw/react-codemirror";
-import { Button } from "@zulkifli-dev/ui/components/button";
+import { Button } from "@zudev/ui/components/button";
 import {
   Bold,
   Code2,
