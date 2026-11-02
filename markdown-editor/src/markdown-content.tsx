@@ -5,6 +5,7 @@ import {
   type ReactNode,
 } from "react";
 import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import { MermaidDiagram } from "./mermaid-diagram.js";
 
@@ -25,7 +26,7 @@ export function MarkdownContent({
   return (
     <div className={`${markdownStyles} ${className}`}>
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkBreaks]}
         urlTransform={(url) =>
           allowObjectUrls && url.startsWith("blob:")
             ? url

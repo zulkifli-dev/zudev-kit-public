@@ -1,6 +1,6 @@
 {
   "name": "@zudev/markdown-editor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/zulkifli-dev/zudev-kit-public.git",
@@ -28,6 +28,7 @@
     "lucide-react": "^1.65.0",
     "mermaid": "^12.2.0",
     "react-markdown": "^10.1.0",
+    "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.1"
   },
   "peerDependencies": {
