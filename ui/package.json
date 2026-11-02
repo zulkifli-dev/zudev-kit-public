@@ -1,6 +1,11 @@
 {
-  "name": "@zudev/ui",
+  "name": "@zulkifli-dev/ui",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zulkifli-dev/zudev-kit-public.git",
+    "directory": "ui"
+  },
   "type": "module",
   "files": [
     "dist",
@@ -65,7 +70,6 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com"
   }
 }

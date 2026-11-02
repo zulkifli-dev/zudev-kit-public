@@ -1,6 +1,11 @@
 {
-  "name": "@zudev/markdown-editor",
+  "name": "@zulkifli-dev/markdown-editor",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zulkifli-dev/zudev-kit-public.git",
+    "directory": "markdown-editor"
+  },
   "type": "module",
   "files": ["dist", "styles.css"],
   "exports": {
@@ -14,7 +19,7 @@
   "dependencies": {
     "@codemirror/lang-markdown": "^6.5.2",
     "@uiw/react-codemirror": "^4.25.12",
-    "@zudev/ui": "^1.0.0",
+    "@zulkifli-dev/ui": "^1.0.0",
     "lucide-react": "^1.65.0",
     "mermaid": "^12.2.0",
     "react-markdown": "^10.1.0",
@@ -34,7 +39,6 @@
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://npm.pkg.github.com"
   }
 }

@@ -1,4 +1,4 @@
-import { Button } from "@zudev/ui/components/button";
+import { Button } from "@zulkifli-dev/ui/components/button";
 import { ZoomIn, ZoomOut } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 
