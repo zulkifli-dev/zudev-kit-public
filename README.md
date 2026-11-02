@@ -1,6 +1,6 @@
 # Zudev Kit Public
 
-Public reusable packages live here and publish independently to GitHub Packages under the `@zulkifli-dev` scope. Each package keeps its own semantic version and build output; this repository has one shared Git history. `@zulkifli-dev/ui` provides the Tailwind CSS v4 theme and shadcn-style components for the other packages.
+Public reusable packages live here and publish to the npm public registry under the `@zulkifli-dev` scope. Each package keeps its own semantic version and build output; this repository has one shared Git history. `@zulkifli-dev/ui` provides the Tailwind CSS v4 theme and shadcn-style components for the other packages.
 
 Current packages:
 
@@ -17,17 +17,14 @@ bun run build
 
 Apps should import `@zulkifli-dev/ui/styles.css` (or a feature package stylesheet that imports it) and use Tailwind CSS v4. Tailwind scans the UI package components through the stylesheet's `@source` directive.
 
-## Publish to GitHub Packages
+## Publish to npm with Bun
 
-Run the **Publish GitHub Packages** workflow from the Actions tab. It builds the workspace and publishes each package separately, with `ui` first because `markdown-editor` depends on it. The workflow uses the repository's `GITHUB_TOKEN` with `packages: write`.
+Make sure the npm account owns the `@zulkifli-dev` scope. Set an npm granular access token as `NPM_CONFIG_TOKEN` in the publishing environment, then run:
 
 ```sh
-# Manual alternative: run from this repository's root
 bun install
 bun run build
-cd ui && bun publish
-cd ../utils && bun publish
-cd ../markdown-editor && bun publish
+bun publish --recursive --access public
 ```
 
-GitHub creates new npm packages as private by default. After publishing, open each package page and choose **Package settings → Change visibility → Public**. This is irreversible. Bun still requires a PAT with `read:packages` to install these packages, even after they are public.
+This publishes all three packages from this repository. The Actions workflow uses the `NPM_TOKEN` repository secret. Publish this kit before `zudev-kit-private`, because its `dashboard` and `landing-kit` packages depend on `@zulkifli-dev/ui`.
