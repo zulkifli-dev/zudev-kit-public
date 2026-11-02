@@ -19,19 +19,15 @@ Apps should import `@zulkifli-dev/ui/styles.css` (or a feature package styleshee
 
 ## Publish to GitHub Packages
 
-Set `GITHUB_PACKAGES_TOKEN` in the publishing shell to a classic GitHub PAT with `write:packages`, build the workspace, then publish each package separately. Publish `ui` before `markdown-editor`, because the editor depends on it:
+Run the **Publish GitHub Packages** workflow from the Actions tab. It builds the workspace and publishes each package separately, with `ui` first because `markdown-editor` depends on it. The workflow uses the repository's `GITHUB_TOKEN` with `packages: write`.
 
 ```sh
-# Run from the workspace root
-bun run build --filter="@zulkifli-dev/*"
-cd packages/public/ui && bun publish
+# Manual alternative: run from this repository's root
+bun install
+bun run build
+cd ui && bun publish
 cd ../utils && bun publish
 cd ../markdown-editor && bun publish
-cd ../../private/auth && bun publish
-cd ../storage && bun publish
-cd ../dashboard && bun publish
-cd ../landing-kit && bun publish
-cd ../media-editor && bun publish
 ```
 
-GitHub creates new npm packages as private by default. After publishing each package, open its GitHub package page, choose **Package settings → Change visibility → Public**. The visibility change is irreversible. To install from Bun, the consuming project also needs the scope mapping and a PAT with `read:packages` in its environment, even after the package is public.
+GitHub creates new npm packages as private by default. After publishing, open each package page and choose **Package settings → Change visibility → Public**. This is irreversible. Bun still requires a PAT with `read:packages` to install these packages, even after they are public.
