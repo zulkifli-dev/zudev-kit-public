@@ -14,16 +14,16 @@ import {
   Link2,
   List,
   ListOrdered,
+  type LucideIcon,
   Quote,
   Strikethrough,
-  type LucideIcon,
 } from "lucide-react";
 import {
+  type ChangeEvent,
+  type ComponentProps,
   useEffect,
   useRef,
   useState,
-  type ChangeEvent,
-  type ComponentProps,
 } from "react";
 
 export type MarkdownToolbarTool =
@@ -54,7 +54,10 @@ type CodeMirrorView = Parameters<
   NonNullable<ComponentProps<typeof CodeMirror>["onCreateEditor"]>
 >[0];
 
-const toolDetails: Record<MarkdownToolbarTool, { label: string; icon: LucideIcon }> = {
+export const markdownToolbarToolDetails: Record<
+  MarkdownToolbarTool,
+  { label: string; icon: LucideIcon }
+> = {
   bold: { label: "Bold", icon: Bold },
   italic: { label: "Italic", icon: Italic },
   strikethrough: { label: "Strikethrough", icon: Strikethrough },
@@ -69,6 +72,46 @@ const toolDetails: Record<MarkdownToolbarTool, { label: string; icon: LucideIcon
   mermaid: { label: "Mermaid diagram", icon: GitBranch },
   code: { label: "Code", icon: Code2 },
 };
+
+export function MarkdownToolbar({
+  tools,
+  activeTools = [],
+  onAction,
+}: {
+  tools: MarkdownToolbarTool[];
+  activeTools?: MarkdownToolbarTool[];
+  onAction: (tool: MarkdownToolbarTool) => void;
+}) {
+  return (
+    <div
+      aria-label="Markdown formatting toolbar"
+      className="flex flex-wrap items-center gap-0.5 border-b bg-muted/40 p-1"
+      role="toolbar"
+    >
+      {tools.map((tool) => {
+        const { label, icon: Icon } = markdownToolbarToolDetails[tool];
+        const active = activeTools.includes(tool);
+
+        return (
+          <Button
+            key={tool}
+            type="button"
+            variant="ghost"
+            size="icon"
+            className={`size-8 text-muted-foreground ${active ? "bg-accent text-accent-foreground" : ""}`}
+            aria-label={label}
+            aria-pressed={active}
+            title={label}
+            onMouseDown={(event) => event.preventDefault()}
+            onClick={() => onAction(tool)}
+          >
+            <Icon className="size-4" aria-hidden="true" />
+          </Button>
+        );
+      })}
+    </div>
+  );
+}
 
 function inlineWrapper(view: CodeMirrorView, marker: string) {
   const { from, to } = view.state.selection.main;
@@ -87,7 +130,10 @@ function inlineWrapper(view: CodeMirrorView, marker: string) {
       };
     }
   }
-  if (marker === "*" && (before[opening - 1] === "*" || after[closing + 1] === "*")) {
+  if (
+    marker === "*" &&
+    (before[opening - 1] === "*" || after[closing + 1] === "*")
+  ) {
     return null;
   }
 
@@ -225,7 +271,13 @@ export function MarkdownEditor({
     const changes = lines.flatMap((line) => {
       const match = matcher.exec(line.text);
       if (removePrefix && match) {
-        return [{ from: line.from, to: line.from + match[0].length, insert: match[1] }];
+        return [
+          {
+            from: line.from,
+            to: line.from + match[0].length,
+            insert: match[1],
+          },
+        ];
       }
       if (!match) return [{ from: line.from, to: line.from, insert: prefix }];
       return [];
@@ -377,34 +429,14 @@ export function MarkdownEditor({
   }
 
   return (
-    <div className={`min-w-0 w-full max-w-full overflow-hidden rounded-md border bg-background ${className}`}>
-      <div
-        aria-label="Markdown formatting toolbar"
-        className="flex flex-wrap items-center gap-0.5 border-b bg-muted/40 p-1"
-        role="toolbar"
-      >
-        {tools.map((tool) => {
-          const { label, icon: Icon } = toolDetails[tool];
-          const active = activeTools.includes(tool);
-
-          return (
-            <Button
-              key={tool}
-              type="button"
-              variant="ghost"
-              size="icon"
-              className={`size-8 text-muted-foreground ${active ? "bg-accent text-accent-foreground" : ""}`}
-              aria-label={label}
-              aria-pressed={active}
-              title={label}
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => handleAction(tool)}
-            >
-              <Icon className="size-4" aria-hidden="true" />
-            </Button>
-          );
-        })}
-      </div>
+    <div
+      className={`min-w-0 w-full max-w-full overflow-hidden rounded-md border bg-background ${className}`}
+    >
+      <MarkdownToolbar
+        tools={tools}
+        activeTools={activeTools}
+        onAction={handleAction}
+      />
       <input
         ref={imageInputRef}
         type="file"
@@ -425,7 +457,8 @@ export function MarkdownEditor({
           syncToolbar(view);
         }}
         onUpdate={(update) => {
-          if (update.selectionSet || update.docChanged) syncToolbar(update.view);
+          if (update.selectionSet || update.docChanged)
+            syncToolbar(update.view);
         }}
         className="max-w-full bg-background text-sm [&_.cm-editor]:max-w-full [&_.cm-editor]:outline-none [&_.cm-scroller]:overflow-auto"
       />

@@ -1,4 +1,9 @@
-import { Children, isValidElement, type ReactElement, type ReactNode } from "react";
+import {
+  Children,
+  isValidElement,
+  type ReactElement,
+  type ReactNode,
+} from "react";
 import ReactMarkdown, { defaultUrlTransform } from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { MermaidDiagram } from "./mermaid-diagram.js";
@@ -10,26 +15,46 @@ export function MarkdownContent({
   children,
   className = "",
   allowObjectUrls = false,
+  renderMermaid = true,
 }: {
   children: string;
   className?: string;
   allowObjectUrls?: boolean;
+  renderMermaid?: boolean;
 }) {
   return (
     <div className={`${markdownStyles} ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
         urlTransform={(url) =>
-          allowObjectUrls && url.startsWith("blob:") ? url : defaultUrlTransform(url)
+          allowObjectUrls && url.startsWith("blob:")
+            ? url
+            : defaultUrlTransform(url)
         }
         components={{
           em: ({ children }) => <em className="italic">{children}</em>,
           pre: ({ children, ...props }) => {
             const child = Children.toArray(children)[0];
-            if (isValidElement<{ className?: string; children?: ReactNode }>(child)) {
-              const code = child as ReactElement<{ className?: string; children?: ReactNode }>;
-              if (code.props.className?.split(" ").includes("language-mermaid")) {
-                return <MermaidDiagram source={String(code.props.children ?? "").trimEnd()} />;
+            if (
+              isValidElement<{ className?: string; children?: ReactNode }>(
+                child,
+              )
+            ) {
+              const code = child as ReactElement<{
+                className?: string;
+                children?: ReactNode;
+              }>;
+              if (
+                code.props.className?.split(" ").includes("language-mermaid")
+              ) {
+                const source = String(code.props.children ?? "").trimEnd();
+                return renderMermaid ? (
+                  <MermaidDiagram source={source} />
+                ) : (
+                  <pre className="my-4 overflow-x-auto rounded-md bg-[#eff2f5] p-4">
+                    <code className="font-mono text-sm">{source}</code>
+                  </pre>
+                );
               }
             }
             return <pre className={props.className}>{children}</pre>;
